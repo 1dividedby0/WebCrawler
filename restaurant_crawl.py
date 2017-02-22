@@ -1,5 +1,5 @@
-from BeautifulSoup import BeautifulSoup
-import urllib2
+from bs4 import BeautifulSoup
+import urllib
 
 price = "&attrs=RestaurantsPriceRange2.1"
 rfile = open("restaurants.txt")
@@ -11,13 +11,13 @@ for i in range(1, 5):
     if i != 1:
         price += "RestaurantsPriceRange2." + str(i)
     # use range instead of xrange with python 3
-    for j in xrange(0,990,10):
+    for j in range(0,990,10):
 
-        soup = BeautifulSoup(urllib2.urlopen("https://www.yelp.com/search?find_desc=Restaurants&find_loc=CA&start=" + str(j) + price).read())
+        soup = BeautifulSoup(urllib.request.urlopen("https://www.yelp.com/search?find_desc=Restaurants&find_loc=CA&start=" + str(j) + price).read())
 
-        stream = soup.findAll("a", {"class":"biz-name js-analytics-click"})
+        stream = soup.find_all("a", {"class":"biz-name js-analytics-click"})
         if len(stream) == 0:
-            print soup.prettify()
+            print(soup.prettify())
             break
 
         for k in range(len(stream)):
@@ -30,9 +30,9 @@ for i in range(1, 5):
                 name = name.replace("&amp;", "and")
                 name = name.replace("\'", "")
                 restaurants.append(name)
-                print name
+                print(name)
             elif name in restaurants:
-                print "Smoothly Running"
+                print("Smoothly Running")
 
 for i in range(len(restaurants)):
     restaurants[i] = restaurants[i].encode("utf-8")
